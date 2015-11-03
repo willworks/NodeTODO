@@ -9,12 +9,6 @@
     "type": "git",
     "url": "git+https://github.com/willworks/NodeTODO.git"
   },
-  "keywords": [
-    "NodeTODO",
-    "node",
-    "mongodb",
-    "express",
-  ],
   "author": "kevin.zhong",
   "license": "MIT",
   "bugs": {

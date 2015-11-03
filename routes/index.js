@@ -1,9 +1,85 @@
 var express = require('express');
-var router = express.Router();
+var db = require('../database/dao');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+/*
+// 调通测试
+exports.test = function (req, res, next) {
+    res.send(db.dburl);
+};
+*/
 
-module.exports = router;
+exports.index = function (req, res, next) {
+    db.allTodos(function (err, todos) {
+        if (err) {
+            return next(err);
+        }
+        res.render('index.html', {todos: todos});
+    });
+};
+
+exports.new = function (req, res, next) {
+    var title = req.body.title || '';
+    title = title.trim();
+    if (!title) {
+        return res.render('error.html', {message: '标题是必须的'});
+    }
+    db.add(title, function (err, row) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/');
+    });
+};
+
+exports.view = function (req, res, next) {
+    res.redirect('/');
+};
+
+exports.edit = function (req, res, next) {
+    var id = req.params.id;
+    db.findTodoById(id, function (err, row) {
+        if (err) {
+            return next(err);
+        }
+        if (!row) {
+            return next();
+        }
+        res.render('edit.html', {todo: row});
+    });
+};
+
+exports.save = function (req, res, next) {
+    var id = req.params.id;
+    var title = req.body.title || '';
+    title = title.trim();
+    if (!title) {
+        return res.render('error.html', {message: '标题是必须的'});
+    }
+    db.editTitle(id,title,function (err, result) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/');
+    });
+};
+
+exports.delete = function (req, res, next) {
+    var id = req.params.id;
+    db.delete(id, function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/');
+    });
+};
+
+exports.finish = function (req, res, next) {
+    var finished = req.query.status === 'yes' ? true : false;
+    var id = req.params.id;
+    db.editFinished(id,finished, function (err, result) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/');
+    });
+};
