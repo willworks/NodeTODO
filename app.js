@@ -10,9 +10,11 @@ var users = require('./routes/users');
 
 var app = express();
 
-// view engine setup
+// 模版引擎
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.engine("html",require("ejs").__express); 
+//app.set("view engine","ejs");
+app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
