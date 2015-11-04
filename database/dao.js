@@ -1,9 +1,9 @@
-var util = require('util');
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var dbconf = require('./dbconf');
+var util = require('util'),
+    mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    dbconf = require('./dbconf');
 
-var dburl = dbconf.db;
+    dburl = dbconf.db;
 
 // 调通测试
 // exports.dburl = dbconf.db;

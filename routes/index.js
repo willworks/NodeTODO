@@ -1,5 +1,5 @@
-var express = require('express');
-var db = require('../database/dao');
+var express = require('express'),
+	db = require('../database/dao');
 
 /*
 // 调通测试
@@ -13,6 +13,8 @@ exports.index = function (req, res, next) {
         if (err) {
             return next(err);
         }
+        // todos是全部的返回的数据库查询结果
+        // res.send(todos);
         res.render('index.html', {todos: todos});
     });
 };

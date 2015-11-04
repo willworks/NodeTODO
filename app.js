@@ -1,12 +1,11 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var ejs = require('ejs');
-var dao = require('./database/dao');
-var app = express();
+var express = require('express'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    ejs = require('ejs'),
+    app = express();
 
 
 // 模版引擎
@@ -23,14 +22,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 路由设置，转发到控制器
+//===============路由设置，转发到控制器===============
 var routes = require('./routes/index');
-
 
 // 调通测试
 // app.get('/test', routes.test);
-
-
 app.get('/', routes.index);
 app.post('/todo/new', routes.new);
 app.get('/todo/:id', routes.view);
@@ -39,7 +35,10 @@ app.post('/todo/:id/edit', routes.save);
 app.get('/todo/:id/delete', routes.delete);
 app.get('/todo/:id/finish', routes.finish);
 
-// 连接数据库
+
+//===============连接数据库===============
+var dao = require('./database/dao');
+
 dao.connect(function(error){
     if (error) throw error;
 });
@@ -47,6 +46,7 @@ dao.connect(function(error){
 app.on('close', function(errno) {
     dao.disconnect(function(err) { });
 });
+
 
 //===============Express默认处理===============
 
